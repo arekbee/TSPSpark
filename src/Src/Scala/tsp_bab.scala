@@ -89,7 +89,7 @@ def findNextPointCounted (
 
   //println(s"Moves to go: $movesToGo List: $linksData ACC: $acc")
 
-  if(movesToGo== 0 || movesToGo == -1 || linksData.isEmpty )
+  if(movesToGo== 0 || linksData.isEmpty )
   {
     //println(s"LinksData is empty acc is $acc and moves are: $moves")
     (acc, moves)
@@ -111,11 +111,19 @@ def findNextPointCounted (
               (reduced._1, reduced._2 +  x3._2 + acc,  x3._3)
              }
 
-             val searchForBest = resultsOfRed2.map { x =>
-                 findNextPointCounted(  movesToGo - 1, x._1 , x._2, x._3,  ( startPoint, x._3) :: moves , allPoints, searchPoints, firstPoint )
-               }.toSeq.sortBy(_._1)
+               val searchForBest = resultsOfRed2.map { x =>
+                   findNextPointCounted( if( movesToGo == -1 ) { 2 } else {movesToGo - 1} , x._1 , x._2, x._3,  ( startPoint, x._3) :: moves , allPoints, searchPoints, firstPoint )
+                 }.toSeq.sortBy(_._1)
 
-               searchForBest(0)
+            val avaConnections = searchForBest(0)._1
+            val avaAcc = searchForBest(0)._2
+
+            // linksData subtraction avaConnection
+            // move :: avaConnection
+            // last step
+            searchForBest(0)
+
+
   }
 }
 
